@@ -1,4 +1,4 @@
-import pygame, time, sys
+import pygame, time, sys, random
 from pygame import font
 from pygame.locals import *
 from sprites import Sprites

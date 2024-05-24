@@ -7,3 +7,4 @@ from gameovermessage import GameOverMessage
 from floor import Floor
 from score import Score
 from bird import Bird
+from pipe import Pipe

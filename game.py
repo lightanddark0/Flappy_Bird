@@ -89,7 +89,7 @@ class Game:
         """
         self.bird = Bird()
         self.score = Score()
-
+        self.pipe = Pipe()
     def run(self):
         """
         Chạy vòng lặp chính của trò chơi, xử lý nhập liệu của người dùng, cập nhật trạng thái trò chơi, kiểm tra va chạm và hiển thị các khung hình.
@@ -113,7 +113,7 @@ class Game:
                         self.bird.update_on = True
                     if event.key == pygame.K_SPACE and game_play:
                         self.bird.flap(dt)
-                    if event.key == pygame.K_SPACE and game_play == False:
+                    if event.key == pygame.K_SPACE and  game_play == False:
                         self.reset()
                         game_play = True
                 if event.type == spawnpipe:

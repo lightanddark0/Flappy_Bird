@@ -55,10 +55,10 @@ class Game:
             Thời gian delta giữa các khung hình để đảm bảo chuyển động mượt mà.
         """
         self.background.draw()
-        self.floor.draw()
-        self.bird.draw(dt)
         self.pipe.pipe_list = self.pipe.move()
         self.pipe.draw()
+        self.floor.draw()
+        self.bird.draw(dt)
         self.score.draw()
     def check_collision(self):
         """
@@ -80,7 +80,9 @@ class Game:
         """
         Vẽ thông báo game over lên màn hình.
         """
-        self.game_over_message.draw(27, 300)
+        screen.fill("black")
+        self.game_over_message.draw(27, 200)
+        self.score.draw_score_over()
 
     def reset(self):
         """
@@ -124,6 +126,7 @@ class Game:
                     self.score.score += 1
                 if self.score.score > self.score.high_score:
                     self.score.high_score = self.score.score
+                    self.score.write_high_score()
                 game_play = self.check_collision()
             else:
                 self.game_over()

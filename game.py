@@ -57,10 +57,9 @@ class Game:
         self.background.draw()
         self.floor.draw()
         self.bird.draw(dt)
-        self.score.draw()
         self.pipe.pipe_list = self.pipe.move()
         self.pipe.draw()
-
+        self.score.draw()
     def check_collision(self):
         """
         Kiểm tra xem chim có va chạm với bất kỳ ống hoặc đất/trần nhà không.
@@ -120,7 +119,9 @@ class Game:
                     self.pipe.pipe_list.append(self.pipe.create_pipe())
             if game_play:
                 self.draw_all(dt)
-                self.score.score += 0.01
+                increase = self.pipe.check_score(self.score.score)
+                if increase:
+                    self.score.score += 1
                 if self.score.score > self.score.high_score:
                     self.score.high_score = self.score.score
                 game_play = self.check_collision()

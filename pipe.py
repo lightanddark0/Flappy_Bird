@@ -58,7 +58,10 @@ class Pipe(Sprites):
             pipe[0].centerx -= 2
             pipe[1].centerx -= 2
         return self.pipe_list
-
+    def check_score(self, score):
+        if self.pipe_list != [] and self.pipe_list[score][0].centerx == 0:
+            return True
+        
     def draw(self):
         """
         Vẽ tất cả các ống lên màn hình.

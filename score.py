@@ -43,7 +43,7 @@ class Score:
         Vẽ điểm số hiện tại và điểm cao nhất lên màn hình.
         """
         self.text_score = self.font.render(f"Score: {int(self.score)}", True, (255, 255, 255))
-        self.score_rect = self.text_score.get_rect(center=(270, 20))
+        self.score_rect = self.text_score.get_rect(center=(300, 20))
         screen.blit(self.text_score, self.score_rect)
         self.read_high_score()
         self.text_high_score = self.font.render(f"Best: {int(self.high_score)}", True, (255, 255, 255))

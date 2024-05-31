@@ -44,6 +44,7 @@ class Game:
         self.score = Score()
         self.pipe = Pipe()
         self.game_over_message = GameOverMessage()
+        self.game_stars_message = GameStarsMessage()
 
     def draw_all(self, dt):
         """
@@ -75,13 +76,19 @@ class Game:
             if self.bird.image_rect.colliderect(pipe[0]) or self.bird.image_rect.colliderect(pipe[1]):
                 return False
         return True
-
+    def game_stars(self):
+        self.background.draw_only()
+        self.floor.draw_only()
+        self.game_stars_message.draw(80,200)
     def game_over(self):
         """
         Vẽ thông báo game over lên màn hình.
         """
-        screen.fill("black")
-        self.game_over_message.draw(27, 200)
+        self.background.draw_only()
+        self.pipe.draw()
+        self.floor.draw_only()
+        
+        self.game_over_message.draw_message()
         self.score.draw_score_over()
 
     def reset(self):
@@ -91,6 +98,7 @@ class Game:
         self.bird = Bird()
         self.score = Score()
         self.pipe = Pipe()
+        
     def run(self):
         """
         Chạy vòng lặp chính của trò chơi, xử lý nhập liệu của người dùng, cập nhật trạng thái trò chơi, kiểm tra va chạm và hiển thị các khung hình.
@@ -98,8 +106,10 @@ class Game:
         last_time = time.time()
         spawnpipe = pygame.USEREVENT
         pygame.time.set_timer(spawnpipe, 800)
+        running = True
+        stars = False
         game_play = True
-        while True:
+        while running:
             # Tính toán delta time
             new_time = time.time()
             dt = new_time - last_time
@@ -109,17 +119,22 @@ class Game:
                     pygame.quit()
                     sys.exit()
                 if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_RETURN:
-                        self.is_enter_pressed = True
-                        self.bird.update_on = True
-                    if event.key == pygame.K_SPACE and game_play:
+                    # if event.key == pygame.K_RETURN:
+                    #     self.is_enter_pressed = True
+                    #     self.bird.update_on = True
+                    if event.key == pygame.K_SPACE and game_play and stars:
                         self.bird.flap(dt)
-                    if event.key == pygame.K_SPACE and  game_play == False:
+                    if event.key == pygame.K_RETURN and game_play == False:
                         self.reset()
                         game_play = True
+                        stars = False
+                    if event.key == pygame.K_SPACE and stars == False:
+                        self.is_enter_pressed = True
+                        self.bird.update_on = True
+                        stars = True
                 if event.type == spawnpipe:
                     self.pipe.pipe_list.append(self.pipe.create_pipe())
-            if game_play:
+            if stars and game_play:
                 self.draw_all(dt)
                 increase = self.pipe.check_score(self.score.score)
                 if increase:
@@ -128,9 +143,13 @@ class Game:
                     self.score.high_score = self.score.score
                     self.score.write_high_score()
                 game_play = self.check_collision()
-            else:
+            elif stars and not game_play:
                 self.game_over()
+            elif not stars and game_play:
+                self.game_stars()
+                self.reset()
             pygame.display.update()
 
 game = Game()
 game.run()
+

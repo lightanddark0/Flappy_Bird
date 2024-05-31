@@ -31,3 +31,6 @@ class Floor(Sprites):
             self.x = 0
         Sprites.draw(self, self.x, 600)
         Sprites.draw(self, self.x + 432, 600)
+    def draw_only(self):
+        Sprites.draw(self, self.x, 600)
+        Sprites.draw(self, self.x + 432, 600)

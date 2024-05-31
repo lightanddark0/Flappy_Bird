@@ -29,7 +29,7 @@ class Pipe(Sprites):
         pipe_up = Sprites("pipe-up", True)
         self.pipe_up = pipe_up.image
         self.pipe_list = []
-        
+        self.space_min = 750
     def create_pipe(self):
         """
         Tạo và trả về một cặp ống mới với vị trí ngẫu nhiên.
@@ -40,7 +40,7 @@ class Pipe(Sprites):
             Danh sách chứa hai đối tượng hình chữ nhật đại diện cho ống trên và ống dưới.
         """
         self.pipe_high = random.randint(650, 800)
-        self.space = random.randint(700, 800)
+        self.space = random.randint(self.space_min, self.space_min + 100)
         self.pipe_down_rect = self.pipe_up.get_rect(center=(800, self.pipe_high))
         self.pipe_up_rect = self.pipe_down.get_rect(center=(800, self.pipe_high - self.space))
         return [self.pipe_down_rect, self.pipe_up_rect]

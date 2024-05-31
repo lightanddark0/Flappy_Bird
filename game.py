@@ -106,9 +106,12 @@ class Game:
         last_time = time.time()
         spawnpipe = pygame.USEREVENT
         pygame.time.set_timer(spawnpipe, 800)
+        birdflap = pygame.USEREVENT + 1
+        pygame.time.set_timer(birdflap, 200)
         running = True
         stars = False
         game_play = True
+
         while running:
             # Tính toán delta time
             new_time = time.time()
@@ -134,6 +137,12 @@ class Game:
                         stars = True
                 if event.type == spawnpipe:
                     self.pipe.pipe_list.append(self.pipe.create_pipe())
+                if event.type == birdflap:
+                    if self.bird.index < 2:
+                        self.bird.index += 1
+                    else:
+                        self.bird.index = 0
+                    self.bird.image, self.bird.image_rect = self.bird.animation()
             if stars and game_play:
                 self.draw_all(dt)
                 increase = self.pipe.check_score(self.score.score)

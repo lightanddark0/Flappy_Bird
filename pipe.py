@@ -30,6 +30,7 @@ class Pipe(Sprites):
         self.pipe_up = pipe_up.image
         self.pipe_list = []
         self.space_min = 750
+        self.speed = 1.5
     def create_pipe(self):
         """
         Tạo và trả về một cặp ống mới với vị trí ngẫu nhiên.
@@ -55,8 +56,8 @@ class Pipe(Sprites):
             Danh sách các ống đã được di chuyển.
         """
         for pipe in self.pipe_list:
-            pipe[0].centerx -= 2
-            pipe[1].centerx -= 2
+            pipe[0].centerx -= self.speed
+            pipe[1].centerx -= self.speed
         return self.pipe_list
     def check_score(self, score):
         if self.pipe_list != [] and self.pipe_list[score][0].centerx == 0:

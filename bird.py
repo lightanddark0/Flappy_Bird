@@ -39,7 +39,7 @@ class Bird(Sprites):
         new_bird = pygame.transform.rotozoom(self.image, -self.y_velocity*3, 1)
         return new_bird
     
-    def draw(self, dt):
+    def draw(self):
         """
         Vẽ chim lên màn hình và áp dụng trọng lực để cập nhật vị trí của chim.
 
@@ -48,11 +48,11 @@ class Bird(Sprites):
         dt : float
             Thời gian delta giữa các khung hình để đảm bảo chuyển động mượt mà.
         """
-        self.applyGravity(dt)
+        self.applyGravity()
         
         screen.blit(self.rotated_bird, self.image_rect)
     
-    def flap(self, dt):
+    def flap(self):
         """
         Tạo hiệu ứng chim vỗ cánh, thay đổi vận tốc theo hướng lên trên.
 
@@ -61,9 +61,9 @@ class Bird(Sprites):
         dt : float
             Thời gian delta giữa các khung hình để đảm bảo chuyển động mượt mà.
         """
-        self.y_velocity = -2.7 #self.flap_speed * dt
+        self.y_velocity = -2.7
         
-    def applyGravity(self, dt):
+    def applyGravity(self):
         """
         Áp dụng trọng lực để thay đổi vận tốc và vị trí của chim.
 
@@ -72,7 +72,7 @@ class Bird(Sprites):
         dt : float
             Thời gian delta giữa các khung hình để đảm bảo chuyển động mượt mà.
         """
-        self.y_velocity += 0.05 #self.gravity * dt
+        self.y_velocity += 0.05
         self.rotated_bird = self.rotated()
         self.image_rect.y += self.y_velocity
     def animation(self):

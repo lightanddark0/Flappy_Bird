@@ -113,10 +113,6 @@ class Game:
         game_play = True
 
         while running:
-            # Tính toán delta time
-            new_time = time.time()
-            dt = new_time - last_time
-            last_time = new_time
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -126,7 +122,7 @@ class Game:
                     #     self.is_enter_pressed = True
                     #     self.bird.update_on = True
                     if event.key == pygame.K_SPACE and game_play and stars:
-                        self.bird.flap(dt)
+                        self.bird.flap()
                     if event.key == pygame.K_RETURN and game_play == False:
                         self.reset()
                         game_play = True
@@ -144,7 +140,7 @@ class Game:
                         self.bird.index = 0
                     self.bird.image, self.bird.image_rect = self.bird.animation()
             if stars and game_play:
-                self.draw_all(dt)
+                self.draw_all()
                 increase = self.pipe.check_score(self.score.score)
                 if increase:
                     self.score.score += 1

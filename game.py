@@ -164,8 +164,7 @@ class Game:
                 if increase:
                     self.play_sound("score")
                     self.score.score += 1
-                    self.pipe.speed += 0.001
-                    self.pipe.space_min -= 0.2
+                    
                 if self.score.score > self.score.high_score:
                     if play_new_record:
                         self.play_sound("new_record")

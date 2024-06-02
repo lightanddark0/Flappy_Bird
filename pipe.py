@@ -29,8 +29,7 @@ class Pipe(Sprites):
         pipe_up = Sprites("pipe-up", True)
         self.pipe_up = pipe_up.image
         self.pipe_list = []
-        self.space_min = 750
-        self.speed = 1.6
+        
     def create_pipe(self):
         """
         Tạo và trả về một cặp ống mới với vị trí ngẫu nhiên.
@@ -41,7 +40,7 @@ class Pipe(Sprites):
             Danh sách chứa hai đối tượng hình chữ nhật đại diện cho ống trên và ống dưới.
         """
         self.pipe_high = random.randint(650, 800)
-        self.space = random.randint(self.space_min, self.space_min + 100)
+        self.space = random.randint(700, 800)
         self.pipe_down_rect = self.pipe_up.get_rect(center=(800, self.pipe_high))
         self.pipe_up_rect = self.pipe_down.get_rect(center=(800, self.pipe_high - self.space))
         return [self.pipe_down_rect, self.pipe_up_rect]
@@ -56,8 +55,8 @@ class Pipe(Sprites):
             Danh sách các ống đã được di chuyển.
         """
         for pipe in self.pipe_list:
-            pipe[0].centerx -= self.speed
-            pipe[1].centerx -= self.speed
+            pipe[0].centerx -= 2
+            pipe[1].centerx -= 2
         return self.pipe_list
     def check_score(self, score):
         if self.pipe_list != [] and self.pipe_list[score][0].centerx == 0:

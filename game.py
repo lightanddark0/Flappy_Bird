@@ -91,8 +91,7 @@ class Game:
         Phát nhạc nền.
         '''
         pygame.mixer.music.load("sound/bg.mp3")
-        while True:
-            pygame.mixer.music.play()
+        pygame.mixer.music.play()
     def game_stars(self):
         self.background.draw_only()
         self.floor.draw_only()
@@ -124,7 +123,7 @@ class Game:
         pygame.time.set_timer(spawnpipe, 800)
         birdflap = pygame.USEREVENT + 1
         pygame.time.set_timer(birdflap, 200)
-        running = True
+        running = True 
         stars = False
         game_play = True
         play_new_record = True
@@ -165,7 +164,7 @@ class Game:
                 if increase:
                     self.play_sound("score")
                     self.score.score += 1
-                    self.pipe.speed += 0.0001
+                    self.pipe.speed += 0.001
                     self.pipe.space_min -= 0.2
                 if self.score.score > self.score.high_score:
                     if play_new_record:

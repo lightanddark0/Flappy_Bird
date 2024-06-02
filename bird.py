@@ -34,7 +34,6 @@ class Bird(Sprites):
         self.y_velocity = 0
         self.gravity = 10
         self.flap_speed = 650
-        self.update_on = False
     def rotated(self):
         new_bird = pygame.transform.rotozoom(self.image, -self.y_velocity*3, 1)
         return new_bird

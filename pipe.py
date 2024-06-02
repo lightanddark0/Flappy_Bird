@@ -30,6 +30,10 @@ class Pipe(Sprites):
         self.pipe_up = pipe_up.image
         self.pipe_list = []
         self.space_min = 750
+<<<<<<< HEAD
+=======
+        self.speed = 1.5
+>>>>>>> parent of 75ffd5e (revert)
     def create_pipe(self):
         """
         Tạo và trả về một cặp ống mới với vị trí ngẫu nhiên.

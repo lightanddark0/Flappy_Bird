@@ -24,6 +24,12 @@ class Score:
         self.score = 0
         self.high_score = 0
         self.font = pygame.font.Font("04B_19.TTF", 40)
+
+    def update(self):
+        """
+        Cập nhật điểm số (hiện tại chưa thực hiện chức năng cụ thể).
+        """
+        pass
     def read_high_score(self):
         self.hs_file = open("highscore.txt", "r+")
         res = self.hs_file.readlines(-1)

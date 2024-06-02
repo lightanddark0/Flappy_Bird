@@ -76,6 +76,20 @@ class Game:
             if self.bird.image_rect.colliderect(pipe[0]) or self.bird.image_rect.colliderect(pipe[1]):
                 return False
         return True
+<<<<<<< HEAD
+=======
+    
+    def play_sound(self, sound):
+        sound = pygame.mixer.Sound(f"sound/{sound}.wav")
+        pygame.mixer.Sound.play(sound)
+    def play_bg_music(self):
+        '''
+        Phát nhạc nền.
+        '''
+        pygame.mixer.music.load("sound/bg.mp3")
+        while True:
+            pygame.mixer.music.play()
+>>>>>>> parent of 75ffd5e (revert)
     def game_stars(self):
         self.background.draw_only()
         self.floor.draw_only()
@@ -108,7 +122,7 @@ class Game:
         pygame.time.set_timer(spawnpipe, 800)
         birdflap = pygame.USEREVENT + 1
         pygame.time.set_timer(birdflap, 200)
-        running = True 
+        running = True
         stars = False
         game_play = True
 
@@ -145,7 +159,11 @@ class Game:
                 if increase:
                     self.score.score += 1
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+                    self.pipe.speed += 0.0001
+>>>>>>> parent of 75ffd5e (revert)
                     self.pipe.space_min -= 0.2
 >>>>>>> parent of 1b71412 (tang do kho, giam khoang cach pipe, nhanh hon)
                 if self.score.score > self.score.high_score:

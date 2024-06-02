@@ -35,6 +35,7 @@ class Game:
         Khởi tạo trò chơi bằng cách thiết lập hiển thị, tải biểu tượng và khởi tạo các thành phần trò chơi.
         """
         pygame.init()
+        self.play_bg_music()
         pygame.display.set_caption("Flappy Bird")
         icon = pygame.image.load("assets/birdup.png")
         pygame.display.set_icon(icon)
@@ -71,25 +72,32 @@ class Game:
             False nếu phát hiện va chạm, ngược lại True.
         """
         if self.bird.image_rect.bottom >= 668 or self.bird.image_rect.top <= -75:
+            self.play_sound("hit.wav")
+            self.play_sound("die.wav")
             return False
         for pipe in self.pipe.pipe_list:
             if self.bird.image_rect.colliderect(pipe[0]) or self.bird.image_rect.colliderect(pipe[1]):
+                self.play_sound("hit.wav")
+                self.play_sound("die.wav")
                 return False
         return True
     
     def play_sound(self, sound):
-        sound = pygame.mixer.Sound(f"sound/{sound}.wav")
+        sound = pygame.mixer.Sound(f"sound/{sound}")
         pygame.mixer.Sound.play(sound)
     def play_bg_music(self):
         '''
         Phát nhạc nền.
         '''
-        pygame.mixer.music.load("sound/bg.mp3")
-        pygame.mixer.music.play()
+        pygame.mixer.music.load("sound/bg_40s.mp3")
+        pygame.mixer.music.play(-1)
     def game_stars(self):
+        
         self.background.draw_only()
         self.floor.draw_only()
         self.game_stars_message.draw(80,200)
+        
+
     def game_over(self):
         """
         Vẽ thông báo game over lên màn hình.
@@ -113,7 +121,6 @@ class Game:
         """
         Chạy vòng lặp chính của trò chơi, xử lý nhập liệu của người dùng, cập nhật trạng thái trò chơi, kiểm tra va chạm và hiển thị các khung hình.
         """
-        last_time = time.time()
         spawnpipe = pygame.USEREVENT
         pygame.time.set_timer(spawnpipe, self.pipe.pipe_timer)
         birdflap = pygame.USEREVENT + 1
@@ -128,11 +135,8 @@ class Game:
                     pygame.quit()
                     sys.exit()
                 if event.type == pygame.KEYDOWN:
-                    # if event.key == pygame.K_RETURN:
-                    #     self.is_enter_pressed = True
-                    #     self.bird.update_on = True
                     if event.key == pygame.K_SPACE and game_play and stars:
-                        
+                        self.play_sound("wing.wav")
                         self.bird.flap()
                     if event.key == pygame.K_RETURN and game_play == False:
                         self.reset()
@@ -151,22 +155,29 @@ class Game:
                         self.bird.index = 0
                     self.bird.image, self.bird.image_rect = self.bird.animation()
             if stars and game_play:
+                self.play_sound("stars.mp3")
+                pygame.mixer.music.pause()
                 self.draw_all()
                 increase = self.pipe.check_score(self.score.score)
                 if increase:
+                    self.play_sound("point.wav")
                     self.score.score += 1
                     if self.score.score % 5 == 0:
                         self.pipe.speed += 0.005
                         self.pipe.space_min -= 1
                         self.pipe.pipe_timer -= 10
                 if self.score.score > self.score.high_score:
+                    self.play_sound("new_best.mp3")
                     self.score.high_score = self.score.score
                     self.score.write_high_score()
                 game_play = self.check_collision()
             elif stars and not game_play:
+                
+                pygame.mixer.music.unpause()
                 self.game_over()
             elif not stars and game_play:
                 self.game_stars()
+                
                 self.reset()
             pygame.display.update()
 

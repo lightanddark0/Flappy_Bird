@@ -62,7 +62,6 @@ class Bird(Sprites):
             Thời gian delta giữa các khung hình để đảm bảo chuyển động mượt mà.
         """
         self.y_velocity = -2.7
-        
     def applyGravity(self):
         """
         Áp dụng trọng lực để thay đổi vận tốc và vị trí của chim.

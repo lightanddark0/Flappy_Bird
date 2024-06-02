@@ -144,6 +144,10 @@ class Game:
                 increase = self.pipe.check_score(self.score.score)
                 if increase:
                     self.score.score += 1
+<<<<<<< HEAD
+=======
+                    self.pipe.space_min -= 0.2
+>>>>>>> parent of 1b71412 (tang do kho, giam khoang cach pipe, nhanh hon)
                 if self.score.score > self.score.high_score:
                     self.score.high_score = self.score.score
                     self.score.write_high_score()

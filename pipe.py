@@ -29,7 +29,7 @@ class Pipe(Sprites):
         pipe_up = Sprites("pipe-up", True)
         self.pipe_up = pipe_up.image
         self.pipe_list = []
-        
+        self.space_min = 750
     def create_pipe(self):
         """
         Tạo và trả về một cặp ống mới với vị trí ngẫu nhiên.

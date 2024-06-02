@@ -76,8 +76,6 @@ class Game:
             if self.bird.image_rect.colliderect(pipe[0]) or self.bird.image_rect.colliderect(pipe[1]):
                 return False
         return True
-<<<<<<< HEAD
-=======
     
     def play_sound(self, sound):
         sound = pygame.mixer.Sound(f"sound/{sound}.wav")
@@ -87,9 +85,7 @@ class Game:
         Phát nhạc nền.
         '''
         pygame.mixer.music.load("sound/bg.mp3")
-        while True:
-            pygame.mixer.music.play()
->>>>>>> parent of 75ffd5e (revert)
+        pygame.mixer.music.play()
     def game_stars(self):
         self.background.draw_only()
         self.floor.draw_only()
@@ -119,7 +115,7 @@ class Game:
         """
         last_time = time.time()
         spawnpipe = pygame.USEREVENT
-        pygame.time.set_timer(spawnpipe, 800)
+        pygame.time.set_timer(spawnpipe, self.pipe.pipe_timer)
         birdflap = pygame.USEREVENT + 1
         pygame.time.set_timer(birdflap, 200)
         running = True
@@ -136,6 +132,7 @@ class Game:
                     #     self.is_enter_pressed = True
                     #     self.bird.update_on = True
                     if event.key == pygame.K_SPACE and game_play and stars:
+                        
                         self.bird.flap()
                     if event.key == pygame.K_RETURN and game_play == False:
                         self.reset()
@@ -158,14 +155,10 @@ class Game:
                 increase = self.pipe.check_score(self.score.score)
                 if increase:
                     self.score.score += 1
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
-                    self.pipe.speed += 0.0001
->>>>>>> parent of 75ffd5e (revert)
-                    self.pipe.space_min -= 0.2
->>>>>>> parent of 1b71412 (tang do kho, giam khoang cach pipe, nhanh hon)
+                    if self.score.score % 5 == 0:
+                        self.pipe.speed += 0.005
+                        self.pipe.space_min -= 1
+                        self.pipe.pipe_timer -= 10
                 if self.score.score > self.score.high_score:
                     self.score.high_score = self.score.score
                     self.score.write_high_score()

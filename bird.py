@@ -20,7 +20,7 @@ class Bird(Sprites):
         Áp dụng trọng lực để thay đổi vận tốc và vị trí của chim.
     """
     
-    def __init__(self, avatar_option):
+    def __init__(self, avatar_option, x):
         """
         Khởi tạo đối tượng chim, thiết lập hình ảnh, vị trí ban đầu và các thuộc tính chuyển động.
         """
@@ -35,18 +35,12 @@ class Bird(Sprites):
             self.images = [Sprites("uppig", True).image, Sprites("midpig", True).image, Sprites("downpig", True).image]
         self.index = 1
         self.image = self.images[self.index]
-        self.x = 100
-        self.image_rect = self.image.get_rect(center=(100, 386))
+        self.x = x
+        self.image_rect = self.image.get_rect(center=(self.x, 386))
         self.y_velocity = 0
         self.gravity = 10
         self.flap_speed = 650
         self.update_on = False
-        
-    def choice_avt(self, value):
-        if value == 1:
-            self.images = [Sprites("birddown", True).image, Sprites("birdup", True).image, Sprites("birddown", True).image]
-            self.index = 1
-            self.image = self.images[self.index]
     def rotated(self):
         new_bird = pygame.transform.rotozoom(self.image, -self.y_velocity*3, 1)
         return new_bird
@@ -61,8 +55,8 @@ class Bird(Sprites):
             Thời gian delta giữa các khung hình để đảm bảo chuyển động mượt mà.
         """
         self.applyGravity()
-        
         screen.blit(self.rotated_bird, self.image_rect)
+
     
     def flap(self):
         """
@@ -88,5 +82,5 @@ class Bird(Sprites):
         self.image_rect.y += self.y_velocity
     def animation(self):
         new_image = self.images[self.index]
-        new_image_rect = new_image.get_rect(center = (100, self.image_rect.centery))
+        new_image_rect = new_image.get_rect(center = (self.x, self.image_rect.centery))
         return new_image, new_image_rect

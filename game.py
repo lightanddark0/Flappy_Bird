@@ -41,12 +41,13 @@ class Game:
         pygame.display.set_icon(icon)
         self.background = Background()
         self.floor = Floor()
-        self.bird = Bird(0)
+        self.bird = Bird(0, 100)
+        self.bird2 = Bird(0, 500)
         self.score = Score()
         self.pipe = Pipe()
         self.game_over_message = GameOverMessage()
         self.game_stars_message = GameStarsMessage()
-
+        self.two_player = False
     def draw_all(self):
         """
         Vẽ tất cả các phần tử trò chơi bao gồm nền, sàn, chim, điểm số và các ống.
@@ -61,26 +62,19 @@ class Game:
         self.pipe.draw()
         self.floor.draw()
         self.bird.draw()
+        if self.two_player:
+            self.bird2.draw()
         self.score.draw()
-    def check_collision(self):
-        """
-        Kiểm tra xem chim có va chạm với bất kỳ ống hoặc đất/trần nhà không.
-
-        Trả về
-        -------
-        bool
-            False nếu phát hiện va chạm, ngược lại True.
-        """
-        if self.bird.image_rect.bottom >= 668 or self.bird.image_rect.top <= -75:
+    def check_collision(self, b):
+        if b.image_rect.bottom >= 668 or b.image_rect.top <= -75:
             self.play_sound("hit.wav")
             self.play_sound("die.wav")
             return False
         for pipe in self.pipe.pipe_list:
-            if self.bird.image_rect.colliderect(pipe[0]) or self.bird.image_rect.colliderect(pipe[1]):
+            if b.image_rect.colliderect(pipe[0]) or b.image_rect.colliderect(pipe[1]):
                 self.play_sound("hit.wav")
                 self.play_sound("die.wav")
                 return False
-        return True
     
     def play_sound(self, sound):
         sound = pygame.mixer.Sound(f"sound/{sound}")
@@ -93,25 +87,33 @@ class Game:
         pygame.mixer.music.play(-1)
     def game_stars(self):
         self.game_stars_message.draw(0,0)
-        
+        if self.two_player:
+            self.game_stars_message.draw2()
 
     def game_over(self):
         """
         Vẽ thông báo game over lên màn hình.
         """
+
         self.background.draw_only()
         self.pipe.draw()
         self.floor.draw_only()
+
         
-        self.game_over_message.draw_message()
-        self.score.draw_score_over()
+        if self.two_player:
+            self.game_over_message.draw2()
+        else:
+            self.game_over_message.draw_message()
+            self.score.draw_score_over()
 
 
     def reset(self, avatar_option):
         """
         Đặt lại các thành phần trò chơi về trạng thái ban đầu để bắt đầu trò chơi mới.
         """
-        self.bird = Bird(avatar_option)
+        self.bird = Bird(avatar_option, 100)
+        if self.two_player:
+            self.bird2 = Bird(avatar_option, 500)
         self.score = Score()
         self.pipe = Pipe()
 
@@ -136,7 +138,10 @@ class Game:
                     if event.key == pygame.K_SPACE and game_play and stars:
                         self.play_sound("wing.wav")
                         self.bird.flap()
-                    
+                    if self.two_player:
+                        if event.key == pygame.K_UP and game_play and stars:
+                            self.play_sound("wing.wav")
+                            self.bird2.flap()
                     if event.key == pygame.K_RETURN and game_play == False:
                         self.reset(self.bird.avatar_option)
                         game_play = True
@@ -145,20 +150,28 @@ class Game:
                         new_score = True
                         self.play_sound("stars.mp3")
                         stars = True
+                    if event.key == pygame.K_y and stars == False:
+                        screen = pygame.display.set_mode((864, 768))
+                        self.two_player = True
                     if event.key == pygame.K_1 and stars == False:
                         self.bird.avatar_option = 1
                     if event.key == pygame.K_2 and stars == False:
                         self.bird.avatar_option = 2
                     if event.key == pygame.K_3 and stars == False:
                         self.bird.avatar_option = 3
-                if event.type == spawnpipe:
+                if event.type == spawnpipe and game_play:
                     self.pipe.pipe_list.append(self.pipe.create_pipe())
                 if event.type == birdflap:
                     if self.bird.index < 2:
                         self.bird.index += 1
                     else:
                         self.bird.index = 0
+                    if self.bird2.index < 2:
+                        self.bird2.index += 1
+                    else:
+                        self.bird2.index = 0    
                     self.bird.image, self.bird.image_rect = self.bird.animation()
+                    self.bird2.image, self.bird2.image_rect = self.bird2.animation()
             if stars and game_play:
                 
                 pygame.mixer.music.pause()
@@ -177,9 +190,12 @@ class Game:
                         self.play_sound("new_best.mp3")
                     self.score.high_score = self.score.score
                     self.score.write_high_score()
-                game_play = self.check_collision()
+                if self.check_collision(self.bird) == False:
+                    game_play = False
+                if self.two_player:
+                    if self.check_collision(self.bird2) == False:
+                        game_play = False
             elif stars and not game_play:
-                
                 pygame.mixer.music.unpause()
                 self.game_over()
             elif not stars and game_play:

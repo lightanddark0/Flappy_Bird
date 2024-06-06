@@ -43,8 +43,8 @@ class Pipe(Sprites):
         """
         self.pipe_high = random.randint(650, 800)
         self.space = random.randint(700, 800)
-        self.pipe_down_rect = self.pipe_up.get_rect(center=(800, self.pipe_high))
-        self.pipe_up_rect = self.pipe_down.get_rect(center=(800, self.pipe_high - self.space))
+        self.pipe_down_rect = self.pipe_up.get_rect(center=(1300, self.pipe_high))
+        self.pipe_up_rect = self.pipe_down.get_rect(center=(1300, self.pipe_high - self.space))
         return [self.pipe_down_rect, self.pipe_up_rect]
 
     def move(self):

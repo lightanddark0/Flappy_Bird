@@ -31,6 +31,7 @@ class Background(Sprites):
             self.x = 0
         Sprites.draw(self, self.x, 0)
         Sprites.draw(self, self.x + 432, 0)
+        Sprites.draw(self, self.x + 432*2, 0)
     def draw_only(self):
         Sprites.draw(self, self.x, 0)
         Sprites.draw(self, self.x + 432, 0)

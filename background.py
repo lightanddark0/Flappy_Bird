@@ -33,5 +33,8 @@ class Background(Sprites):
         Sprites.draw(self, self.x + 432, 0)
         Sprites.draw(self, self.x + 432*2, 0)
     def draw_only(self):
+        """
+        Vẽ nền không di chuyển
+        """
         Sprites.draw(self, self.x, 0)
         Sprites.draw(self, self.x + 432, 0)

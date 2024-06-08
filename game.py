@@ -48,6 +48,7 @@ class Game:
         self.game_over_message = GameOverMessage()
         self.game_starts_message = GameStartsMessage()
         self.two_player = False
+    
     def draw_all(self):
         """
         Vẽ tất cả các phần tử trò chơi bao gồm nền, sàn, chim, điểm số và các ống.
@@ -65,7 +66,21 @@ class Game:
         if self.two_player:
             self.bird2.draw()
         self.score.draw()
+    
     def check_collision(self, b):
+        """
+        Kiểm tra va chạm giữa chim và ống hoặc đất/trần nhà.
+        
+        Tham số
+        -------
+        b : Bird
+            Đối tượng chim cần kiểm tra va chạm.
+
+        Trả về
+        -------
+        bool
+            False nếu phát hiện va chạm, ngược lại trả về True.
+        """
         if b.image_rect.bottom >= 668 or b.image_rect.top <= -75:
             self.play_sound("hit.wav")
             self.play_sound("die.wav")
@@ -77,15 +92,28 @@ class Game:
                 return False
     
     def play_sound(self, sound):
+        """
+        Phát âm thanh.
+
+        Tham số
+        -------
+        sound : str
+            Tên tệp âm thanh cần phát.
+        """
         sound = pygame.mixer.Sound(f"sound/{sound}")
         pygame.mixer.Sound.play(sound)
+    
     def play_bg_music(self):
-        '''
+        """
         Phát nhạc nền.
-        '''
+        """
         pygame.mixer.music.load("sound/bg_40s.mp3")
         pygame.mixer.music.play(-1)
+    
     def game_starts(self):
+        """
+        Hiển thị thông điệp bắt đầu trò chơi.
+        """
         self.game_starts_message.image = Sprites("starts", False).image
         self.game_starts_message.draw(0,0)
         
@@ -96,22 +124,24 @@ class Game:
         """
         Vẽ thông báo game over lên màn hình.
         """
-
         self.background.draw_only()
         self.pipe.draw()
         self.floor.draw_only()
 
-        
         if self.two_player:
             self.game_over_message.draw2()
         else:
             self.game_over_message.draw_message()
             self.score.draw_score_over()
 
-
     def reset(self, avatar_option):
         """
         Đặt lại các thành phần trò chơi về trạng thái ban đầu để bắt đầu trò chơi mới.
+
+        Tham số
+        -------
+        avatar_option : int
+            Tùy chọn avatar cho chim.
         """
         self.bird = Bird(avatar_option, 100)
         if self.two_player:
@@ -212,4 +242,3 @@ class Game:
 
 game = Game()
 game.run()
-

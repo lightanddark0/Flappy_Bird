@@ -50,6 +50,9 @@ class Score:
         self.high_score_rect = self.text_high_score.get_rect(center=(300, 60))
         screen.blit(self.text_high_score, self.high_score_rect)
     def draw_score_over(self):
+        """
+        Vẽ điểm số và high score lên mang hình kết thúc
+        """
         self.text_score = self.font.render(f"Score: {int(self.score)}", True, (255, 255, 255))
         self.score_rect = self.text_score.get_rect(center=(200, 400))
         screen.blit(self.text_score, self.score_rect)

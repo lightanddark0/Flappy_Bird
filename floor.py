@@ -33,6 +33,9 @@ class Floor(Sprites):
         Sprites.draw(self, self.x + 432, 600)
         Sprites.draw(self, self.x + 432*2, 600)
     def draw_only(self):
+        """
+        Vẽ sàn không di chuyển
+        """
         Sprites.draw(self, self.x, 600)
         Sprites.draw(self, self.x + 432, 600)
         Sprites.draw(self, self.x + 432*2, 600)

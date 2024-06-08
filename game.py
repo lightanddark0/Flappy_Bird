@@ -46,7 +46,7 @@ class Game:
         self.score = Score()
         self.pipe = Pipe()
         self.game_over_message = GameOverMessage()
-        self.game_stars_message = GameStarsMessage()
+        self.game_starts_message = GameStartsMessage()
         self.two_player = False
     def draw_all(self):
         """
@@ -85,10 +85,12 @@ class Game:
         '''
         pygame.mixer.music.load("sound/bg_40s.mp3")
         pygame.mixer.music.play(-1)
-    def game_stars(self):
-        self.game_stars_message.draw(0,0)
+    def game_starts(self):
+        self.game_starts_message.image = Sprites("starts", False).image
+        self.game_starts_message.draw(0,0)
+        
         if self.two_player:
-            self.game_stars_message.draw2()
+            self.game_starts_message.draw2()
 
     def game_over(self):
         """
@@ -142,6 +144,7 @@ class Game:
                         if event.key == pygame.K_UP and game_play and stars:
                             self.play_sound("wing.wav")
                             self.bird2.flap()
+                        
                     if event.key == pygame.K_RETURN and game_play == False:
                         self.reset(self.bird.avatar_option)
                         game_play = True
@@ -150,9 +153,13 @@ class Game:
                         new_score = True
                         self.play_sound("stars.mp3")
                         stars = True
-                    if event.key == pygame.K_y and stars == False:
+                    if event.key == pygame.K_y and stars == False and self.two_player == False:
                         screen = pygame.display.set_mode((864, 768))
                         self.two_player = True
+                    elif event.key == pygame.K_y and stars == False and self.two_player == True:
+                        self.two_player = False
+                        screen = pygame.display.set_mode((432, 768))
+                        self.game_starts()
                     if event.key == pygame.K_1 and stars == False:
                         self.bird.avatar_option = 1
                     if event.key == pygame.K_2 and stars == False:
@@ -199,7 +206,7 @@ class Game:
                 pygame.mixer.music.unpause()
                 self.game_over()
             elif not stars and game_play:
-                self.game_stars()
+                self.game_starts()
                 self.reset(self.bird.avatar_option)
             pygame.display.update()
 

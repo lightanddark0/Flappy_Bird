@@ -8,26 +8,34 @@ class Game:
     """
     Đại diện cho vòng lặp chính và cơ chế của trò chơi Flappy Bird.
 
-    Phương thức
-    -----------
+    Các phương thức:
+    ---------------
     __init__():
         Khởi tạo trò chơi, thiết lập hiển thị và tải các tài nguyên ban đầu.
 
-    draw_all(dt):
-        Vẽ tất cả các phần tử trò chơi lên màn hình, cập nhật vị trí của chúng dựa trên delta time.
+    draw_all():
+        Vẽ tất cả các phần tử trò chơi lên màn hình, cập nhật vị trí của chúng.
 
-    check_collision():
-        Kiểm tra va chạm giữa chim và ống hoặc đất/trần nhà.
-        Trả về False nếu phát hiện va chạm, ngược lại trả về True.
+    check_collision(b):
+        Kiểm tra va chạm giữa chim và ống hoặc đất/trần nhà. Trả về False nếu phát hiện va chạm, ngược lại trả về True.
+
+    play_sound(sound):
+        Phát âm thanh từ tệp âm thanh.
+
+    play_bg_music():
+        Phát nhạc nền cho trò chơi.
+
+    game_starts():
+        Hiển thị thông điệp bắt đầu trò chơi.
 
     game_over():
-        Hiển thị thông báo game over.
+        Hiển thị thông báo game over lên màn hình.
 
-    reset():
+    reset(avatar_option):
         Đặt lại chim và điểm số để bắt đầu trò chơi mới.
 
     run():
-        Chạy vòng lặp chính của trò chơi, xử lý các sự kiện, cập nhật trạng thái trò chơi và hiển thị.
+        Chạy vòng lặp chính của trò chơi, xử lý các sự kiện, cập nhật trạng thái trò chơi và hiển thị các khung hình.
     """
     
     def __init__(self):
@@ -36,7 +44,7 @@ class Game:
         """
         pygame.init()
         self.play_bg_music()
-        pygame.display.set_caption("Flappy Bird")
+        pygame.display.setCaption("Flappy Bird")
         icon = pygame.image.load("assets/birdup.png")
         pygame.display.set_icon(icon)
         self.background = Background()
@@ -52,11 +60,6 @@ class Game:
     def draw_all(self):
         """
         Vẽ tất cả các phần tử trò chơi bao gồm nền, sàn, chim, điểm số và các ống.
-
-        Tham số
-        -------
-        dt : float
-            Thời gian delta giữa các khung hình để đảm bảo chuyển động mượt mà.
         """
         self.background.draw()
         self.pipe.pipe_list = self.pipe.move()
@@ -70,13 +73,13 @@ class Game:
     def check_collision(self, b):
         """
         Kiểm tra va chạm giữa chim và ống hoặc đất/trần nhà.
-        
-        Tham số
+
+        Tham số:
         -------
         b : Bird
             Đối tượng chim cần kiểm tra va chạm.
 
-        Trả về
+        Trả về:
         -------
         bool
             False nếu phát hiện va chạm, ngược lại trả về True.
@@ -90,12 +93,13 @@ class Game:
                 self.play_sound("hit.wav")
                 self.play_sound("die.wav")
                 return False
+        return True
     
     def play_sound(self, sound):
         """
         Phát âm thanh.
 
-        Tham số
+        Tham số:
         -------
         sound : str
             Tên tệp âm thanh cần phát.
@@ -115,14 +119,14 @@ class Game:
         Hiển thị thông điệp bắt đầu trò chơi.
         """
         self.game_starts_message.image = Sprites("starts", False).image
-        self.game_starts_message.draw(0,0)
+        self.game_starts_message.draw(0, 0)
         
         if self.two_player:
             self.game_starts_message.draw2()
 
     def game_over(self):
         """
-        Vẽ thông báo game over lên màn hình.
+        Hiển thị thông báo game over lên màn hình.
         """
         self.background.draw_only()
         self.pipe.draw()
@@ -138,7 +142,7 @@ class Game:
         """
         Đặt lại các thành phần trò chơi về trạng thái ban đầu để bắt đầu trò chơi mới.
 
-        Tham số
+        Tham số:
         -------
         avatar_option : int
             Tùy chọn avatar cho chim.
@@ -174,28 +178,30 @@ class Game:
                         if event.key == pygame.K_UP and game_play and stars:
                             self.play_sound("wing.wav")
                             self.bird2.flap()
-                        
-                    if event.key == pygame.K_RETURN and game_play == False:
+                    if event.key == pygame.K_RETURN and not game_play:
                         self.reset(self.bird.avatar_option)
                         game_play = True
                         stars = False
-                    if event.key == pygame.K_SPACE and stars == False:
+                    if event.key == pygame.K_SPACE and not stars:
                         new_score = True
                         self.play_sound("stars.mp3")
                         stars = True
-                    if event.key == pygame.K_y and stars == False and self.two_player == False:
-                        screen = pygame.display.set_mode((864, 768))
-                        self.two_player = True
-                    elif event.key == pygame.K_y and stars == False and self.two_player == True:
-                        self.two_player = False
-                        screen = pygame.display.set_mode((432, 768))
-                        self.game_starts()
-                    if event.key == pygame.K_1 and stars == False:
+                    if event.key == pygame.K_y and not stars:
+                        if not self.two_player:
+                            screen = pygame.display.set_mode((864, 768))
+                            self.two_player = True
+                        else:
+                            self.two_player = False
+                            screen = pygame.display.set_mode((432, 768))
+                            self.game_starts()
+                    if event.key == pygame.K_1 and not stars:
                         self.bird.avatar_option = 1
-                    if event.key == pygame.K_2 and stars == False:
+                    if event.key == pygame.K_2 and not stars:
                         self.bird.avatar_option = 2
-                    if event.key == pygame.K_3 and stars == False:
+                    if event.key == pygame.K_3 and not stars:
                         self.bird.avatar_option = 3
+                    if event.key == pygame.K_4 and not stars:
+                        self.bird.avatar_option = 4
                 if event.type == spawnpipe and game_play:
                     self.pipe.pipe_list.append(self.pipe.create_pipe())
                 if event.type == birdflap:
@@ -210,7 +216,6 @@ class Game:
                     self.bird.image, self.bird.image_rect = self.bird.animation()
                     self.bird2.image, self.bird2.image_rect = self.bird2.animation()
             if stars and game_play:
-                
                 pygame.mixer.music.pause()
                 self.draw_all()
                 increase = self.pipe.check_score(self.score.score)
@@ -227,10 +232,10 @@ class Game:
                         self.play_sound("new_best.mp3")
                     self.score.high_score = self.score.score
                     self.score.write_high_score()
-                if self.check_collision(self.bird) == False:
+                if not self.check_collision(self.bird):
                     game_play = False
                 if self.two_player:
-                    if self.check_collision(self.bird2) == False:
+                    if not self.check_collision(self.bird2):
                         game_play = False
             elif stars and not game_play:
                 pygame.mixer.music.unpause()

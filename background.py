@@ -12,6 +12,9 @@ class Background(Sprites):
 
     draw():
         Vẽ nền lên màn hình, cập nhật vị trí của nền để tạo hiệu ứng chuyển động liên tục.
+    
+    draw_only():
+        Vẽ nền không di chuyển.
     """
     
     def __init__(self):
@@ -32,9 +35,10 @@ class Background(Sprites):
         Sprites.draw(self, self.x, 0)
         Sprites.draw(self, self.x + 432, 0)
         Sprites.draw(self, self.x + 432*2, 0)
+    
     def draw_only(self):
         """
-        Vẽ nền không di chuyển
+        Vẽ nền không di chuyển.
         """
         Sprites.draw(self, self.x, 0)
         Sprites.draw(self, self.x + 432, 0)

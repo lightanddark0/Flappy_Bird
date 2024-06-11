@@ -55,7 +55,8 @@ class Bird(Sprites):
         self.gravity = 10
         self.flap_speed = 650
         self.update_on = False
-    
+        self.g = 3
+        self.p = 0.05
     def rotated(self):
         """
         Tạo và trả về hình ảnh chim đã được xoay theo vận tốc hiện tại.
@@ -79,7 +80,7 @@ class Bird(Sprites):
         """
         Tạo hiệu ứng chim vỗ cánh, thay đổi vận tốc theo hướng lên trên.
         """
-        self.y_velocity = -2.8
+        self.y_velocity = -self.g 
     
     def applyGravity(self):
         """
@@ -87,7 +88,7 @@ class Bird(Sprites):
 
         Trọng lực sẽ làm tăng vận tốc hướng xuống của chim và cập nhật vị trí theo thời gian.
         """
-        self.y_velocity += 0.05
+        self.y_velocity += self.p
         self.rotated_bird = self.rotated()
         self.image_rect.y += self.y_velocity
     

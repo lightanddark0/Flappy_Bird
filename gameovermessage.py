@@ -28,7 +28,7 @@ class GameOverMessage(Sprites):
         Vẽ thông báo game over lên màn hình và hiển thị hướng dẫn cho người chơi.
         """
         self.draw(27, 200)
-        self.text = self.font.render("Nhấn Enter để chơi lại", True, (255, 255, 255))
+        self.text = self.font.render("Press Enter to play again", True, (255, 255, 255))
         self.text_rect = self.text.get_rect(center=(225, 500))
         screen.blit(self.text, self.text_rect)
     
@@ -37,6 +37,6 @@ class GameOverMessage(Sprites):
         Vẽ thông báo game over lên màn hình cho chế độ 2 người chơi.
         """
         self.draw(250, 200)
-        self.text = self.font.render("Nhấn Enter để chơi lại", True, (255, 255, 255))
+        self.text = self.font.render("Press enter to play again", True, (255, 255, 255))
         self.text_rect = self.text.get_rect(center=(450, 500))
         screen.blit(self.text, self.text_rect)

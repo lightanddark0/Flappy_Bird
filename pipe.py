@@ -30,8 +30,8 @@ class Pipe(Sprites):
         self.pipe_up = pipe_up.image
         self.pipe_list = []
         self.space_min = 750
-        self.pipe_timer = 1500 - 10
-        self.speed = 1.5 + 0.005
+        self.pipe_timer = 700 - 10
+        self.speed = 2 + 0.005
     def create_pipe(self):
         """
         Tạo và trả về một cặp ống mới với vị trí ngẫu nhiên.
@@ -41,10 +41,11 @@ class Pipe(Sprites):
         list
             Danh sách chứa hai đối tượng hình chữ nhật đại diện cho ống trên và ống dưới.
         """
+        
         self.pipe_high = random.randint(650, 800)
         self.space = random.randint(700, 800)
-        self.pipe_down_rect = self.pipe_up.get_rect(center=(1300, self.pipe_high))
-        self.pipe_up_rect = self.pipe_down.get_rect(center=(1300, self.pipe_high - self.space))
+        self.pipe_down_rect = self.pipe_up.get_rect(center=(1000, self.pipe_high))
+        self.pipe_up_rect = self.pipe_down.get_rect(center=(1000, self.pipe_high - self.space))
         return [self.pipe_down_rect, self.pipe_up_rect]
 
     def move(self):
@@ -63,7 +64,9 @@ class Pipe(Sprites):
     def check_score(self, score):
         if self.pipe_list != [] and self.pipe_list[score][0].centerx <= 20:
             return True
-        
+    def check_score2(self, score):
+        if self.pipe_list != [] and self.pipe_list[score][0].centerx <= 20:
+            return True 
     def draw(self):
         """
         Vẽ tất cả các ống lên màn hình.

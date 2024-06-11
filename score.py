@@ -15,6 +15,8 @@ class Score:
 
     draw():
         Vẽ điểm số hiện tại lên màn hình.
+    draw_over():
+    Vẽ điểm số và high score lên mang hình kết thúc
     """
     
     def __init__(self):

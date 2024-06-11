@@ -2,8 +2,6 @@ from init import *
 from config import *
 
 pygame.font.init()
-p = 0.2
-
 class Game:
     """
     Đại diện cho vòng lặp chính và cơ chế của trò chơi Flappy Bird.
@@ -44,7 +42,7 @@ class Game:
         """
         pygame.init()
         self.play_bg_music()
-        pygame.display.setCaption("Flappy Bird")
+        pygame.display.set_caption("Flappy Bird")
         icon = pygame.image.load("assets/birdup.png")
         pygame.display.set_icon(icon)
         self.background = Background()
@@ -148,17 +146,25 @@ class Game:
             Tùy chọn avatar cho chim.
         """
         self.bird = Bird(avatar_option, 100)
-        if self.two_player:
-            self.bird2 = Bird(avatar_option, 500)
+        
         self.score = Score()
         self.pipe = Pipe()
-
+        if self.two_player:
+            self.bird2 = Bird(avatar_option, 500)
+            spawnpipe = pygame.USEREVENT
+            # self.bird.g = 3
+            # self.bird2.g = 3
+            self.bird.p = 0.06
+            self.bird2.p = 0.06
+            pygame.time.set_timer(spawnpipe, self.pipe.pipe_timer + 300)
+            self.pipe.speed += 0.5
     def run(self):
         """
         Chạy vòng lặp chính của trò chơi, xử lý nhập liệu của người dùng, cập nhật trạng thái trò chơi, kiểm tra va chạm và hiển thị các khung hình.
         """
         spawnpipe = pygame.USEREVENT
         pygame.time.set_timer(spawnpipe, self.pipe.pipe_timer)
+        
         birdflap = pygame.USEREVENT + 1
         pygame.time.set_timer(birdflap, 200)
         running = True
@@ -187,9 +193,11 @@ class Game:
                         self.play_sound("stars.mp3")
                         stars = True
                     if event.key == pygame.K_y and not stars:
+                        self.reset(0)
                         if not self.two_player:
                             screen = pygame.display.set_mode((864, 768))
                             self.two_player = True
+                            self.game_starts()
                         else:
                             self.two_player = False
                             screen = pygame.display.set_mode((432, 768))
@@ -202,7 +210,7 @@ class Game:
                         self.bird.avatar_option = 3
                     if event.key == pygame.K_4 and not stars:
                         self.bird.avatar_option = 4
-                if event.type == spawnpipe and game_play:
+                if event.type == spawnpipe and game_play and stars:
                     self.pipe.pipe_list.append(self.pipe.create_pipe())
                 if event.type == birdflap:
                     if self.bird.index < 2:
@@ -218,7 +226,10 @@ class Game:
             if stars and game_play:
                 pygame.mixer.music.pause()
                 self.draw_all()
-                increase = self.pipe.check_score(self.score.score)
+                
+                increase = False
+                if len(self.pipe.pipe_list) > 3:
+                    increase = self.pipe.check_score(self.score.score)
                 if increase:
                     self.play_sound("point.wav")
                     self.score.score += 1

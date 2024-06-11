@@ -141,6 +141,7 @@ class Game:
         Đặt lại các thành phần trò chơi về trạng thái ban đầu để bắt đầu trò chơi mới.
 
         Tham số:
+        
         -------
         avatar_option : int
             Tùy chọn avatar cho chim.
@@ -156,8 +157,8 @@ class Game:
             # self.bird2.g = 3
             self.bird.p = 0.06
             self.bird2.p = 0.06
-            pygame.time.set_timer(spawnpipe, self.pipe.pipe_timer + 300)
-            self.pipe.speed += 0.5
+            pygame.time.set_timer(spawnpipe, self.pipe.pipe_timer + 600)
+            self.pipe.speed += 1
     def run(self):
         """
         Chạy vòng lặp chính của trò chơi, xử lý nhập liệu của người dùng, cập nhật trạng thái trò chơi, kiểm tra va chạm và hiển thị các khung hình.

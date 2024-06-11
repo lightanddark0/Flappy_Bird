@@ -30,8 +30,8 @@ class Pipe(Sprites):
         self.pipe_up = pipe_up.image
         self.pipe_list = []
         self.space_min = 750
-        self.pipe_timer = 700 - 10
-        self.speed = 2 + 0.005
+        self.pipe_timer = 1500 - 10
+        self.speed = 1.5 + 0.005
     def create_pipe(self):
         """
         Tạo và trả về một cặp ống mới với vị trí ngẫu nhiên.
